@@ -1,5 +1,5 @@
 def average(lst):
-	def summa(lst):
+	def summa(lst):    #сумма
 		s = 0
 		for x in lst:
 			s += x
