@@ -1,0 +1,11 @@
+
+
+
+sql = '''
+	CREATE TABLE tasks (
+		id INTEGER PRIMARY KEY AUTOINCREMENT, 
+		name TEXT NOT NULL,
+		detailed defenition TEXT NOT NULL DEFAULT '',
+		created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+	)
+'''
