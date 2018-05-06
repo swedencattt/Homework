@@ -19,16 +19,18 @@ def action_active_list():
 	"""Показывает все активные задачи"""
 	with get_connection() as conn:
 		print = storage.show_tasks_active(conn)
-
+	action_status()
 
 def action_complete_list():
 	"""Показывает все завершенные задачи"""
 	with get_connection() as conn:
 		print = storage.show_tasks_complete(conn)
+	action_status()
 
 def action_list():
 	with get_connection() as conn:
 		print = storage.show_tasks(conn)
+	action_status()
 
 def action_status():
 	"""Показывает список задач"""
