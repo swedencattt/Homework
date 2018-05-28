@@ -7,7 +7,6 @@ class ParamHandler(metaclass=ABCMeta):
 	def __init__(self, source):
 		self.source = source
 		self.params = {}
-		self.data = {}
 
 	def add_param(self, key, value):
 		self.params[key] = value
@@ -62,18 +61,18 @@ class XmlParamHandler(ParamHandler):
 class JsonParamHandler(ParamHandler):
 	def read(self):
 		with open(self.source) as f:
-			self.data = json.load(f)
+			self.params = json.load(f)
 	def write(self):
 		with open(self.source, 'w') as f:
-			json.dump(self.data, f)
+			json.dump(self.params, f)
 
 class PickleParamHandler(ParamHandler):
 	def read(self):
 		with open(self.sourse, 'rb') as f:
- 			self.data = pickle.load(f)
+ 			self.params = pickle.load(f)
 	def write(self):
 		with open(self.source, 'wb') as f:
- 			pickle.dump(self.data, f)
+ 			pickle.dump(self.params, f)
 
 
 class ParamHandlerException(Exception):
