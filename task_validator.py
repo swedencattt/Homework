@@ -19,7 +19,7 @@ class Validator(metaclass=ABCMeta):
 			raise ValidatorException('Validator must have a name!')
 		if not issubclass(klass, Validator):
 			raise ValidatorException(
-				'Class "{}" is not Validator'.format(klass)
+				'Class "{}" is not Validator!'.format(klass)
 			)
 		cls.names[name] = klass
 
@@ -64,12 +64,7 @@ class ValidatorException(Exception):
 
 Validator.add_type('email', EMailValidator)
 validator = Validator.get_instance('email')
-print(validator.validate('info@itmo-it.org'))
-print(validator.validate('unknown'))
+
 
 Validator.add_type('datetime', DateTimeValidator)
 validator = Validator.get_instance('datetime')
-print(validator.validate('2017-9-11'))
-print(validator.validate('1.9.2017'))
-print(validator.validate('01/09/2017 12:00'))
-print(validator.validate('0'))
