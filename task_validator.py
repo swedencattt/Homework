@@ -42,6 +42,8 @@ class EMailValidator(Validator):
 			return True
 		else:
 			return False
+
+Validator.add_type('email', EMailValidator)
 		
 	
 class DateTimeValidator(Validator):
@@ -57,14 +59,8 @@ class DateTimeValidator(Validator):
 			except:
 				pass
 
+Validator.add_type('datetime', DateTimeValidator)
+
 class ValidatorException(Exception):
 	def __init__(self, message):
 		"""Exceptions"""
-
-
-Validator.add_type('email', EMailValidator)
-validator = Validator.get_instance('email')
-
-
-Validator.add_type('datetime', DateTimeValidator)
-validator = Validator.get_instance('datetime')
