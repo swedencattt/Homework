@@ -42,7 +42,9 @@ class MainWindow(QMainWindow):
 
 	def _initSignals(self):
 		self.convertBtn.clicked.connect(self.onClickConvertBtn)
-		self.convertBtn.clicked.connect(self.enabled)	
+
+		self.srcAmountEdit.valueChanged.connect(self.enabled)
+		self.resultAmountEdit.valueChanged.connect(self.enabled)	
 			
 		self.clearBtn.clicked.connect(self.onClickClearBtn)
 
@@ -62,10 +64,12 @@ class MainWindow(QMainWindow):
 		self.setCentralWidget(w)
 
 	def enabled(self):
-		if self.srcAmountEdit.value() or self.resultAmountEdit.value():
-			self.convertBtn.setEnabled(True)
-		else:
+		v = self.srcAmountEdit.value()
+		n = self.resultAmountEdit.value()
+		if v and n or not v and not n:
 			self.convertBtn.setEnabled(False)
+		else:
+			self.convertBtn.setEnabled(True)
 
 	def onClickConvertBtn(self):
 		value_rub = self.srcAmountEdit.value()
@@ -74,12 +78,12 @@ class MainWindow(QMainWindow):
 		value_usd = self.resultAmountEdit.value()
 		if value_usd:
 			self.srcAmountEdit.setValue(value_usd * Course().get())
-		self.convertBtn.setEnabled(False)
+		
 
 	def onClickClearBtn(self):
 		self.resultAmountEdit.setValue(0)
 		self.srcAmountEdit.setValue(0)
-		self.convertBtn.setEnabled(False)
+	
 
 	def keyPressEvent(self, event):
 		if event.key() == QtCore.Qt.Key_Return:
