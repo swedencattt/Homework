@@ -1,5 +1,3 @@
-# Что-то мне подсказывает, что реализация неверная(
-
 from abc import ABCMeta, abstractmethod
 
 class Command(metaclass=ABCMeta):
@@ -12,39 +10,39 @@ class Command(metaclass=ABCMeta):
 
 
 
-class Menu(object):
-	def __init__(self, limit):
-		self.limit = limit
-		self.counter = 0
-
-	commands = {}
-	def add_command(cls, name, klass):
-		if not name:
-			raise CommandException('Command must have a name!')
-		if not issubclass(klass, Command):
-			raise CommandException(
-				'Class "{}" is not Command'.format(klass)
-			)
-		cls.commands[name] = klass
-
-	def execute(cls, name, *args, **kwargs):
-		klass = cls.commands.get(name)
-
-		if klass is None:
-			raise CommandException(
-				'Command with name "{}" not found'.format(name)
-			)
-		return klass(*args, **kwargs)
+class Menu(metaclass=ABCMeta):
+	def __init__(self):
+		super().__init__()
+		self.value = 0
+		self.commands = {}
 
 	def __iter__(self):
 		return self
 
 	def __next__(self):
-		if self.counter < self.limit:
-			self.counter += 1
-			return 1
+		if self.value < len(self.commands):
+			self.value += 1
+			return list(self.commands.items())[self.value]
 		else:
-			StopIteration
+			raise StopIteration
+
+	def add_command(self, name, klass):
+		if not name:
+			raise CommandException('Command must have a name!')
+		if not issubclass(klass, Command):
+			raise CommandException(
+				'Class "{}" is not Command!'.format(klass)
+			)
+		self.commands[name] = klass
+
+	def execute(self, name, *args, **kwargs):
+		com = self.commands.get(name)
+
+		if com is None:
+			raise CommandException(
+				'Command with name "{}" not found'.format(name)
+			)
+		return com(*args, **kwargs).execute()
 
 class CommandException(Exception):
 	def __init__(self, message):
@@ -61,17 +59,3 @@ class ListCommand(Command):
 		pass
 	def execute(self):
 		pass
-
-'''
-menu = Menu(3)
-menu.add_command('show', ShowCommand)
-menu.add_command('list', ListCommand)
-menu.execute('show', 1)
-menu.execute('list')
-menu.execute('unknown')
-for item in menu:
-	print(item)
-
-for name, command in menu:
-	print(name, command)
-'''
